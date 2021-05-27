@@ -2,17 +2,20 @@ package com.company;
 
 import java.util.*;
 
-class Person
+class PersonForTestingBooth
+
 {
     private long aadharNo;
     private String name;
     private int ctValue;
     private boolean isPositive;
 
-    public Person(long aadharNo, String name) {
+    public PersonForTestingBooth
+(long aadharNo, String name) {
         this.aadharNo = aadharNo;
         this.name = name;
         ctValue=0;
+        isPositive=false;
     }
 
     public long getAadharNo() {
@@ -43,13 +46,16 @@ class Person
 
 public class TestingBooth {
     String day;
-    private LinkedHashSet<Person> personList = new LinkedHashSet<>();
-    private LinkedHashSet<Person> criticalPatients = new LinkedHashSet<>();
+    private LinkedHashSet<PersonForTestingBooth
+> personList = new LinkedHashSet<>();
+    private LinkedHashSet<PersonForTestingBooth
+> criticalPatients = new LinkedHashSet<>();
 
     public TestingBooth(String day) {
         this.day = day;
     }
-    public boolean registerPerson(Person p)
+    public boolean registerPerson(PersonForTestingBooth
+ p)
     {
         return personList.add(p);
     }
@@ -57,8 +63,10 @@ public class TestingBooth {
         Iterator it = personList.iterator();
         while(it.hasNext())
         {
-            Person p = (Person)it.next();
-            //System.out.println("person with ID: "+p.getAadharNo()+ " is being tested.");
+            PersonForTestingBooth
+ p = (PersonForTestingBooth
+)it.next();
+            //System.out.println("PersonForTestingBoothwith ID: "+p.getAadharNo()+ " is being tested."); " +
             Random r = new Random();
             int ct = r.nextInt(50);
             p.setCtValue(ct);
@@ -74,13 +82,16 @@ public class TestingBooth {
     }
     public void getPositives()
     {
-        LinkedHashSet<Person> all = new LinkedHashSet<>();
+        LinkedHashSet<PersonForTestingBooth
+> all = new LinkedHashSet<>();
         all.addAll(personList);
         all.addAll(criticalPatients);
         Iterator it = all.iterator();
         while(it.hasNext())
         {
-            Person p = (Person)it.next();
+            PersonForTestingBooth
+ p = (PersonForTestingBooth
+)it.next();
             if(p.isPositive())
             {
                 p.displayDetails();
@@ -92,7 +103,9 @@ public class TestingBooth {
         Iterator it = personList.iterator();
         while(it.hasNext())
         {
-            Person p = (Person)it.next();
+            PersonForTestingBooth
+ p = (PersonForTestingBooth
+)it.next();
             if(p.getCtValue() < 15 && p.getCtValue() >= 10)
             {
                 criticalPatients.add(p);
@@ -106,7 +119,9 @@ public class TestingBooth {
         Iterator it = criticalPatients.iterator();
         while(it.hasNext())
         {
-            Person p = (Person)it.next();
+            PersonForTestingBooth
+ p = (PersonForTestingBooth
+)it.next();
             if(p.getCtValue() < 15)
             {
                 p.displayDetails();
@@ -118,7 +133,9 @@ public class TestingBooth {
         Iterator it = personList.iterator();
         while(it.hasNext())
         {
-            Person p = (Person)it.next();
+            PersonForTestingBooth
+ p = (PersonForTestingBooth
+)it.next();
             p.displayDetails();
         }
     }

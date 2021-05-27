@@ -22,7 +22,6 @@ public class Main {
         AL.setNew(arrList1);
         AL.displayList();
     }
-
     public static void createListFromFile(TestingBooth MondayTesting)
     {
         try
@@ -39,7 +38,7 @@ public class Main {
 
                 aadharNo = Long.parseLong(fields[0]);
                 name = fields[1];
-                Person p = new Person(aadharNo,name);
+                PersonForTestingBooth p = new PersonForTestingBooth(aadharNo,name);
                 MondayTesting.registerPerson(p);
             }
             file.close();
@@ -53,8 +52,10 @@ public class Main {
             System.out.println("Reading completed.");
         }
     }
-    public static void main(String[] args) {
-	// write your code here
+
+    public static void setImplementation()
+    {
+        // write your code here
         //System.out.println("hii");
         TestingBooth MondayTesting = new TestingBooth("Monday");
         createListFromFile(MondayTesting);
@@ -66,5 +67,49 @@ public class Main {
         MondayTesting.showCriticals();
         System.out.println("----------");
         MondayTesting.getPositives();
+    }
+    public static void setMapList(TestingBoothAdvance TBA)
+    {
+        try
+        {
+            RandomAccessFile file = new RandomAccessFile("F:\\SI-2021\\Java\\DataStructures" +
+                    "\\person_list.txt","r");
+
+            while(file.getFilePointer() != file.length())
+            {
+                String line = file.readLine();
+                String name;
+                long aadharNo;
+                String[] fields = line.split("-");
+
+                aadharNo = Long.parseLong(fields[0]);
+                name = fields[1];
+                TBA.registerPerson(aadharNo,name);
+            }
+            file.close();
+        }
+        catch(IOException err)
+        {
+            System.out.println(err);
+        }
+        finally
+        {
+            System.out.println("Reading completed.");
+        }
+    }
+    public static void MapImplementation()
+    {
+        TestingBoothAdvance TBA = new TestingBoothAdvance();
+        setMapList(TBA);
+        //TBA.displayRegistrations();
+        TBA.testing();
+        //TBA.displayAfterTesting();
+        TBA.findPositives();
+        TBA.showPositives();
+        TBA.getTop5Criticals();
+        TBA.getPersonDetails(17);
+    }
+    public static void main(String[] args) {
+        
     }
 }

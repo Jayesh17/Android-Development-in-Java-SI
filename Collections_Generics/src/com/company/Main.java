@@ -52,7 +52,6 @@ public class Main {
             System.out.println("Reading completed.");
         }
     }
-
     public static void setImplementation()
     {
         // write your code here
@@ -109,7 +108,28 @@ public class Main {
         TBA.getTop5Criticals();
         TBA.getPersonDetails(17);
     }
+    public static void studentImplementation()
+    {
+        StudentDataManipulation stRecords = new StudentDataManipulation();
+        boolean readDone = stRecords.getData("F:\\SI-2021\\Java\\DataStructures" +
+                "\\Students.txt");
+        if(readDone)
+        {
+            //stRecords.diplayRecords();
+//            stRecords.displayByID(12010);
+            stRecords.calculateGrades();
+//            stRecords.showGradeByID(12010);
+            //stRecords.listStudentsByGrade('B');
+            stRecords.top10Students();
+            stRecords.getHighestRankedStudent();
+            stRecords.getLowestRankedStudent();
+        }
+        else
+        {
+            System.out.println("error");
+        }
+    }
     public static void main(String[] args) {
-        
+        studentImplementation();
     }
 }

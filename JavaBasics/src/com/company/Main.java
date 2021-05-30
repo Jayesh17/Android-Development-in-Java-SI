@@ -90,14 +90,141 @@ class Child2 extends Parent
     }
 };
 
+//Interface Implementation
+
+interface ShapeProperty
+{
+    double area();
+    double circumferance();
+}
+class Square implements Cloneable,ShapeProperty
+{
+    float side;
+    public Square(float side) {
+        this.side = side;
+    }
+
+    public void setSide(float side) {
+        this.side = side;
+    }
+
+    @Override
+    public double area()
+    {
+        return side*side;
+    }
+    @Override
+    public double circumferance()
+    {
+        return 4*side;
+    }
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(this == obj)
+            return true;
+
+        if (!(obj instanceof Square)) {
+            return false;
+        }
+
+        Square t = (Square) obj;
+        if(side==t.side)
+        {
+            return true;
+        }
+        return false;
+    }
+    @Override
+    public Object clone() throws CloneNotSupportedException
+    {
+        Square s = (Square)super.clone();
+        s.side = side;
+
+        return s;
+    }
+    @Override
+    public String toString()
+    {
+        return "Side of this Square are : "+side;
+    }
+}
+class Triangle implements Cloneable,ShapeProperty
+{
+    float side1,side2,side3;
+
+    public Triangle(float side1, float side2, float side3) {
+        this.side1 = side1;
+        this.side2 = side2;
+        this.side3 = side3;
+    }
+
+    public void setSide1(float side1) {
+        this.side1 = side1;
+    }
+
+    public void setSide2(float side2) {
+        this.side2 = side2;
+    }
+
+    public void setSide3(float side3) {
+        this.side3 = side3;
+    }
+
+    @Override
+    public double area()
+    {
+        double s,a;
+        s= (side1+side3+side2)/2;
+        a = s*(s-side1)*(s-side2)*(s-side3);
+        return Math.sqrt(a);
+    }
+    @Override
+    public double circumferance()
+    {
+        return side1+side2+side3;
+    }
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(this == obj)
+            return true;
+
+        if (!(obj instanceof Triangle)) {
+            return false;
+        }
+
+        Triangle t = (Triangle)obj;
+        if(side1==t.side1 && side2==t.side2 && side3==t.side3)
+        {
+            return true;
+        }
+        return false;
+    }
+    @Override
+    public Object clone() throws CloneNotSupportedException
+    {
+        Triangle t = (Triangle) super.clone();
+        t.side3 = side3;
+        t.side1 = side1;
+        t.side2 = side2;
+
+        return t;
+    }
+    @Override
+    public String toString()
+    {
+        return "Sides of this Triangle are : "+side1+","+side2+","+side3;
+    }
+}
 public class Main {
 
     public static void fn1(int n)
     {
         n++;
     }
-    public static void main(String[] args) {
-	// write your code here
+    public static void basicsImp(String args[])
+    {
         System.out.println("hello");
 
         //The Java codes are first compiled into byte code (machine independent code). Then the byte code runs on Java Virtual Machine (JVM) regardless of the underlying architecture.
@@ -169,11 +296,11 @@ public class Main {
         //Jagged array
 
         String arrs[][] = new String[][]
-        {
-                new String[]{"jayesh","Jitubhai", "Lalchandani"},
-                new String[]{"joy", "Lalchandani"},
-                new String[]{"Jayesh", "Lalchandani"}
-        };
+                {
+                        new String[]{"jayesh","Jitubhai", "Lalchandani"},
+                        new String[]{"joy", "Lalchandani"},
+                        new String[]{"Jayesh", "Lalchandani"}
+                };
 
         String arrs2[][] = arrs; // Just reference initialization not copy.
 
@@ -218,7 +345,7 @@ public class Main {
 
         // anonomous objects are not referenced by any class reference, they are created for just
         // method calling
-            new anms();
+        new anms();
 
         /*What is a Singleton class?
         As the name implies, a class is said to be singleton if it limits the number of objects of that class to one.
@@ -248,5 +375,34 @@ public class Main {
         p.msg2();
 
         //all the methods in an interface are declared with an empty body and are public and all fields are public, static and final by default.
+    }
+    public static void shapeImp()
+    {
+        try
+        {
+            Square s1 = new Square(10.5f);
+            Square s2 = (Square) s1.clone();
+
+            s2.setSide(11.5f);
+
+            Triangle t1 = new Triangle(5.5f,3.5f,4.5f);
+            Triangle t2 = (Triangle) t1.clone();
+
+            t2.setSide1(2.5f);
+
+            System.out.println(t1.equals(t2));
+
+            System.out.println(t1.toString()+" , Area : "+t1.area()+" , Circumferance: "+t1.circumferance());
+            System.out.println(t2.toString()+" , Area : "+t2.area()+" , Circumferance: "+t2.circumferance());
+            System.out.println(s1.toString()+" , Area : "+s1.area()+" , Circumferance: "+s1.circumferance());
+            System.out.println(s2.toString()+" , Area : "+s2.area()+" , Circumferance: "+s2.circumferance());
+        }
+        catch (CloneNotSupportedException e)
+        {
+            System.out.println(e);
+        }
+    }
+    public static void main(String[] args) {
+
     }
 }

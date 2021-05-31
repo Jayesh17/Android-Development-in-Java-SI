@@ -1,5 +1,10 @@
 package com.company;
+import java.io.*;
 import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 class Student
 {
@@ -59,7 +64,6 @@ class anms
   }
 
 };
-
 
 abstract class Parent
 {
@@ -215,6 +219,158 @@ class Triangle implements Cloneable,ShapeProperty
     public String toString()
     {
         return "Sides of this Triangle are : "+side1+","+side2+","+side3;
+    }
+}
+class SerialEx implements Serializable
+{
+    private int n ;
+    private String str;
+
+    public SerialEx(int n, String str) {
+        this.n = n;
+        this.str = str;
+    }
+    public void show()
+    {
+        System.out.println("Number : "+n+" String : "+str);
+    }
+}
+
+
+//Lambda Expression
+interface op
+{
+    void findOddorEven(Vector<Integer> v);
+}
+class LambdaTest
+{
+    static public op even = (v)->{
+        System.out.println("Even values:");
+        v.forEach((value)->{
+            if(value % 2 == 0)
+            {
+                System.out.print(value+" ");
+            }
+        });
+    };
+
+    static public op odd = (v)->{
+        System.out.println("Odd values:");
+        v.forEach((value)->{
+            if(value % 2 != 0)
+            {
+                System.out.print(value+" ");
+            }
+        });
+    };
+}
+
+//Thread manipulation with thread class
+
+class ThreadEx extends Thread
+{
+    public ThreadEx(String name) {
+        super(name);
+    }
+    @Override
+    public void run()
+    {
+        try
+        {
+            System.out.println("Thread with ID : "+Thread.currentThread().getId()+"And with Name " +
+                    ": "+Thread.currentThread().getName()+" is running");
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+}
+class ThreadEx1 implements Runnable
+{
+    @Override
+    public void run()
+    {
+        try
+        {
+            System.out.println("Thread with ID : "+Thread.currentThread().getId()+"And with Name " +
+                    ": "+Thread.currentThread().getName()+" is running");
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+}
+
+class SyncEx extends Thread
+{
+    static Integer n = 10;
+
+    @Override
+    public void run()
+    {
+        try
+        {
+            synchronized (n)
+            {
+                System.out.println("Thread ID : "+Thread.currentThread().getId()+" Started Running.");
+                System.out.println("Thread with ID : "+Thread.currentThread().getId()+" Comes inside " +
+                        "the critical section.");
+                n++;
+                System.out.println("Thread with ID : "+Thread.currentThread().getId()+" Updates n " +
+                        "value to : "+n);
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+}
+
+class Factorial implements Runnable
+{
+    private int num ;
+
+    public Factorial(int num) {
+        this.num = num;
+    }
+    @Override
+    public void run()
+    {
+        long f = 1;
+        for(int i=1;i<=num;i++)
+        {
+            f = f*i;
+        }
+        synchronized (System.out)
+        {
+            System.out.println("Thread ID : "+Thread.currentThread().getId()+" having number " +num+
+                    " calculates Factorial : "+f);
+        }
+    }
+}
+
+class Fact implements Callable
+{
+    private int num;
+
+    public Fact(int num) {
+        this.num = num;
+    }
+    @Override
+    public Object call()
+    {
+        long f = 1;
+        for(int i=1;i<=num;i++)
+        {
+            f = f*i;
+        }
+        synchronized (System.out){
+        System.out.println("Thread ID : "+Thread.currentThread().getId()+" is calculating " +
+                "factorial of "+num);}
+        return f;
     }
 }
 public class Main {
@@ -402,7 +558,129 @@ public class Main {
             System.out.println(e);
         }
     }
-    public static void main(String[] args) {
+    public static void SerialImp()
+    {
+        //Serialization is a mechanism of converting the state of an object into a byte stream. Deserialization is the reverse process where the byte stream is used to recreate the actual Java object in memory. This mechanism is used to persist the object
+        //java.io.Serializable interface. use ObjectOuputStream and ObjectInputStream
+        SerialEx obj = new SerialEx(10,"Hello");
+        String file = "serialexfile.txt";
+        try
+        {
+            FileOutputStream outfile = new FileOutputStream(file);
+            ObjectOutputStream outobj = new ObjectOutputStream(outfile);
 
+            outobj.writeObject(obj);
+
+            System.out.println("Serialization done.");
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+
+        obj = null;
+        try
+        {
+            FileInputStream infile = new FileInputStream(file);
+            ObjectInputStream inobj = new ObjectInputStream(infile);
+
+            obj = (SerialEx) inobj.readObject();
+
+            System.out.println("Deserialization done.");
+            obj.show();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+    public static void lambdaImp()
+    {
+        Vector<Integer> v = new Vector<>();
+        int arr[] = {1,5,2,4,6,7,8,9};
+        for (int val:arr)
+        {
+            v.add(val);
+        }
+
+        LambdaTest.even.findOddorEven(v);
+        LambdaTest.odd.findOddorEven(v);
+    }
+    public static void ThreadImp()
+    {
+//        Threads can be created by using two mechanisms :
+        //Extending the Thread class
+//        for(int i=0;i<5;i++)
+//        {
+//            ThreadEx objThread = new ThreadEx("Thread-"+i);
+//            objThread.start();
+//        }
+//        //Implementing the Runnable Interface
+//        for(int i=0;i<5;i++)
+//        {
+//            Thread obj = new Thread(new ThreadEx1());
+//            obj.start();
+//        }
+        //Implementing Syncronised work
+//        for(int i=0;i<5;i++)
+//        {
+//            SyncEx obj = new SyncEx();
+//            obj.start();
+//        }
+
+        //A thread pool reuses previously created threads to execute current tasks and offers a
+        // solution to the problem of thread cycle overhead and resource thrashing.Since the thread is already existing when the request arrives, the delay introduced by thread creation is eliminated, making the application more responsive.
+
+        //Java provides the Executor framework which is centered around the Executor interface, its sub-interface –ExecutorService and the class-ThreadPoolExecutor, which implements both of these interfaces. By using the executor, one only has to implement the Runnable objects and send them to the executor to execute.
+
+        //Setting maximum size of pool
+        //final int MAX_SIZE = 3;
+
+        //Creating Runnable inteface Objects to run.
+        /*Runnable objects[] = new Runnable[10];
+        int n = 10;
+        for(int i=0;i<9;i++)
+        {
+            objects[i] = new Factorial(n);
+            n++;
+        }
+        //creating pool for 3 threads.
+        ExecutorService pool = Executors.newFixedThreadPool(MAX_SIZE);
+        for(int i=0;i<9;i++)
+        {
+            pool.execute(objects[i]);
+        }
+        pool.shutdown();
+        */
+        //Daemon thread is a low priority thread that runs in background to perform tasks such as
+        // garbage collection.
+
+        //Future And callable Implementation
+        try
+        {
+            int n = 1;
+            FutureTask[] factAns = new FutureTask[10];
+            Callable[] factNums = new Callable[10];
+            for(int i=0;i<9;i++)
+            {
+                factNums[i] = new Fact(n);
+                n++;
+                factAns[i] = new FutureTask(factNums[i]);
+                Thread t = new Thread(factAns[i]);
+                t.start();
+            }
+
+            for(int i=0;i<9;i++)
+            {
+                System.out.println(factAns[i].get());
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+    public static void main(String[] args) {
+        ThreadImp();
     }
 }

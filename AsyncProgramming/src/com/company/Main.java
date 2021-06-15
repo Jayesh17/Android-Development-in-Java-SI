@@ -1,10 +1,7 @@
 package com.company;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 class Factorial implements Callable<Long>
 {
@@ -25,8 +22,8 @@ class Factorial implements Callable<Long>
 
 public class Main {
 
-    public static void main(String[] args) {
-	// write your code here
+    public void FutureImp()
+    {
         int cores = Runtime.getRuntime().availableProcessors();
         ExecutorService service = Executors.newFixedThreadPool(cores);
         List<Future<Long>> allFutures = new ArrayList<>();
@@ -49,5 +46,16 @@ public class Main {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void main(String[] args) {
+	// write your code here
+
+        /*supplyAsync(): It complete its job asynchronously. The result of supplier is run by a task from ForkJoinPool.commonPool() as default. The supplyAsync() method returns CompletableFuture on which we can apply other methods.
+        thenApply(): The method accepts function as an arguments. It returns a new CompletableStage when this stage completes normally. The new stage use as the argument to the supplied function.
+        join(): the method returns the result value when complete. It also throws a CompletionException (unchecked exception) if completed exceptionally.*/
+
+        MainController.getData();
+        MainController.showData();
     }
 }

@@ -203,13 +203,29 @@ public class Main {
     }
     public static void main(String[] args) {
 
-        LinkList personList = new LinkList();
+        /*LinkList personList = new LinkList();
         createListFromFile(personList);
         personList.displayList();
         System.out.println(personList.totalSize());
 
         //binary tree
         BinaryTree treeRoot = createTree(personList);
-        treeRoot.displayTree();
+        treeRoot.displayTree();*/
+
+        String[] phones = {"1000000000","2000000000","3000000000","4000000000","5000000000"};
+        String[] names = {"Santosh Barvadekar","Shudraka Chopade",
+                "Ragunath Sabanis",
+                "Daksha Barvadekar",
+                "Govinda Sharma"};
+
+        FriendGraph friendGraph = new FriendGraph(phones,names);
+        friendGraph.addFriend(phones[0],phones[4]);
+        friendGraph.addFriend(phones[0],phones[3]);
+        friendGraph.addFriend(phones[1],phones[2]);
+        friendGraph.addFriend(phones[3],phones[1]);
+        friendGraph.addFriend(phones[4],phones[2]);
+        friendGraph.addFriend(phones[4],phones[3]);
+
+        friendGraph.viewLists();
     }
 }
